@@ -42,7 +42,7 @@ const MonthlySales = (props: MonthlySalesProps) => {
   return (
     <Paper style={styles.paper}>
       <div style={{ ...styles.title, ...styles.header }}>
-        Monthly Sales
+        Contrats par mois
       </div>
       <div style={styles.div}>
         <ResponsiveContainer>

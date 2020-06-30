@@ -34,12 +34,12 @@ const defaultProps = {
     "actions",
   ],
   headers: [
-    "Reference",
-    "Quantity",
-    "Amount",
-    "Customer",
-    "Order Date",
-    "Shipping Date",
+    "Référence",
+    "Loyer",
+    "Prix de vente",
+    "Nom propriétaire",
+    "Date de saisie",
+    "Mise à jour",
     "Actions",
   ],
 };
@@ -222,8 +222,8 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
 
     return (
       <PageBase
-        title={"Orders (" + orderList.length + ")"}
-        navigation="React CRM / Order"
+        title={"Offres (" + orderList.length + ")"}
+        navigation="MapMarket CRM / Offre"
       >
         {isFetching ? (
           <div>
@@ -286,7 +286,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
                 <Grid item xs={12} style={styles.searchField}>
                   <TextField
                     // placeholder="Order Reference"
-                    label="Order Reference"
+                    label="Offre Référence"
                     fullWidth={true}
                     name="reference"
                     value={this.state.search.contain.reference}

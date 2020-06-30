@@ -120,7 +120,7 @@ class CustomerFormPage extends React.Component<
     const { isFetching, customer } = this.props;
 
     return (
-      <PageBase title="Customer" navigation="Application / Customer ">
+      <PageBase title="Client" navigation="MapMarket / Client ">
         {isFetching ? (
           <div>
             <SkeletonForm />
@@ -159,8 +159,8 @@ class CustomerFormPage extends React.Component<
                     <Field
                       variant="outlined"
                       component={TextField}
-                      placeholder="First Name"
-                      label="First Name"
+                      placeholder="Prénom"
+                      label="Prénom"
                       name="firstname"
                       fullWidth={true}
                       required
@@ -170,8 +170,8 @@ class CustomerFormPage extends React.Component<
                     <Field
                       variant="outlined"
                       component={TextField}
-                      placeholder="Last Name"
-                      label="Last Name"
+                      placeholder="Nom"
+                      label="Nom"
                       fullWidth={true}
                       name="lastname"
                       required
@@ -194,8 +194,8 @@ class CustomerFormPage extends React.Component<
                     <Field
                       variant="outlined"
                       component={TextField}
-                      placeholder="Email"
-                      label="Email"
+                      placeholder="Mail"
+                      label="Mail"
                       fullWidth={true}
                       name="email"
                       required
@@ -206,7 +206,7 @@ class CustomerFormPage extends React.Component<
                       variant="outlined"
                       component={TextField}
                       placeholder="555-555-555"
-                      label="Mobile"
+                      label="Téléphone"
                       fullWidth={true}
                       type="string"
                       name="mobile"
@@ -224,11 +224,181 @@ class CustomerFormPage extends React.Component<
                     )}
                   </Grid>
                   <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Provenance"
+                      label="Provenance"
+                      fullWidth={true}
+                      type="string"
+                      name="origin"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Secteur activité"
+                      label="Secteur activité"
+                      fullWidth={true}
+                      type="string"
+                      name="activitysector"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Installation activité"
+                      label="Installation activité"
+                      fullWidth={true}
+                      type="string"
+                      name="activitysetup"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Type"
+                      label="Type"
+                      fullWidth={true}
+                      type="string"
+                      name="type"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Projet"
+                      label="Projet"
+                      fullWidth={true}
+                      type="string"
+                      name="project"
+                      required
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Lieu d'implantation"
+                      label="Lieu d'implantation"
+                      fullWidth={true}
+                      type="string"
+                      name="physicallocation"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Sexe"
+                      label="Sexe"
+                      fullWidth={true}
+                      type="string"
+                      name="sex"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Statut"
+                      label="Statut"
+                      fullWidth={true}
+                      type="string"
+                      name="status"
+                      required
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Age"
+                      label="Age"
+                      fullWidth={true}
+                      type="number"
+                      name="age"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
                     {customer.avatar && (
                       <Card style={styles.card}>
                         <img width={100} src={customer.avatar} />
                       </Card>
                     )}
+                  </Grid>
+                </Grid>
+                <br />
+                <Divider />
+                <Grid container style={styles.container} spacing={3}>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Primo accueil"
+                      label="Primo accueil"
+                      fullWidth={true}
+                      type="string"
+                      name="firstcontact"
+                      required
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Suivi interne"
+                      label="Suivi interne"
+                      fullWidth={true}
+                      type="string"
+                      name="internalfollowup"
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Date contact"
+                      label="Date contact"
+                      fullWidth={true}
+                      type="date"
+                      name="contactdate"
+                      required
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Date accusé réception 5 jours"
+                      label="Date accusé réception 5 jours"
+                      fullWidth={true}
+                      type="date"
+                      name="ackdate"
+                      required
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Indicateur accusé réception 5 jours"
+                      label="Indicateur accusé réception 5 jours"
+                      fullWidth={true}
+                      type="string"
+                      name="ackindicator"
+                      required
+                    />
                   </Grid>
                 </Grid>
                  <br />
@@ -238,7 +408,7 @@ class CustomerFormPage extends React.Component<
                 <div style={styles.buttons}>
                   <Link to="/customers">
                     <Button variant="contained">
-                      <ArrowBackIosIcon /> Back{" "}
+                      <ArrowBackIosIcon /> Retourner{" "}
                     </Button>
                   </Link>
                   <Button
@@ -248,7 +418,7 @@ class CustomerFormPage extends React.Component<
                     color="primary"
                     disabled={isSubmitting}
                   >
-                    <SaveIcon /> Save
+                    <SaveIcon /> Enregistrer
                   </Button>
                 </div>
                 <Snackbar

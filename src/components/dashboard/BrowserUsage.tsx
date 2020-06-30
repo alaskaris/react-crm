@@ -35,7 +35,7 @@ const BrowserUsage = (props: BrowserUsageProps) => {
 
   return (
     <Paper style={styles.paper}>
-      <span style={styles.title}>Browser Usage</span>
+      <span style={styles.title}>Types de produits</span>
       <div style={styles.clear} />
 
       <Grid container spacing={2}>

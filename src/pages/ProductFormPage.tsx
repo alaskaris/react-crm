@@ -10,7 +10,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { getAction } from "../actions/product";
 
 import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-material-ui";
+import { TextField, Checkbox } from "formik-material-ui";
 
 import { thunkApiCall, thunkApiQCall } from "../services/thunks";
 import { Product,  Category } from "../types";
@@ -101,7 +101,7 @@ class ProductFormPage extends React.Component<
     const { categoryList, product, isFetching } = this.props;
 
     return (
-      <PageBase title="Product" navigation="Application / Product ">
+      <PageBase title="Produit" navigation="MapMarket / Produit ">
         {isFetching ? (
           <div>
             <SkeletonForm />
@@ -137,8 +137,8 @@ class ProductFormPage extends React.Component<
                       select
                       component={TextField}
                       as="select"
-                      label="Category"
-                      placeholder="Category"
+                      label="Type"
+                      placeholder="Type"
                       variant="outlined"
                       fullWidth={true}
                       name="categoryId"
@@ -157,8 +157,8 @@ class ProductFormPage extends React.Component<
                     <Field
                       variant="outlined"
                       component={TextField}
-                      placeholder="Product"
-                      label="Product"
+                      placeholder="Nom"
+                      label="Nom"
                       name="name"
                       fullWidth={true}
                       required
@@ -169,8 +169,184 @@ class ProductFormPage extends React.Component<
                     <Field
                       variant="outlined"
                       component={TextField}
-                      placeholder="Price"
-                      label="Price"
+                      placeholder="Saisie"
+                      label="Saisie"
+                      fullWidth={true}
+                      type="date"
+                      name="entrydate"
+                      required
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Mise à jour"
+                      label="Mise à jour"
+                      fullWidth={true}
+                      type="date"
+                      name="lastupdated"
+                      required
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Rédacteur"
+                      label="Rédacteur"
+                      fullWidth={true}
+                      type="string"
+                      name="updatedby"
+                      required
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Adresse"
+                      label="Adresse"
+                      fullWidth={true}
+                      type="string"
+                      name="address"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="CP"
+                      label="CP"
+                      fullWidth={true}
+                      type="string"
+                      name="postalcode"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Ville"
+                      label="Ville"
+                      fullWidth={true}
+                      type="string"
+                      name="city"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Pas de porte"
+                      label="Pas de porte"
+                      fullWidth={true}
+                      type="boolean"
+                      name="hasdoor"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      label="Parking"
+                      fullWidth={true}
+                      name="hasparking"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Nom propriétaire / Agence"
+                      label="Nom propriétaire / Agence"
+                      fullWidth={true}
+                      type="string"
+                      name="owner"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Téléphone"
+                      label="Téléphone"
+                      fullWidth={true}
+                      type="string"
+                      name="phone"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Adresse mail"
+                      label="Adresse mail"
+                      fullWidth={true}
+                      type="string"
+                      name="entrydate"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Commentaires"
+                      label="Commentaires"
+                      fullWidth={true}
+                      type="string"
+                      name="comments"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Lien offre"
+                      label="Lien offre"
+                      fullWidth={true}
+                      type="string"
+                      name="offerlink"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Superficie"
+                      label="Superficie"
                       fullWidth={true}
                       type="number"
                       name="unitPrice"
@@ -181,11 +357,23 @@ class ProductFormPage extends React.Component<
                     <Field
                       variant="outlined"
                       component={TextField}
-                      placeholder="Quantity"
-                      label="Quantity"
+                      placeholder="Prix de vente"
+                      label="Prix de vente"
                       fullWidth={true}
                       type="number"
                       name="numInStock"
+                      required
+                    />
+                  </Grid>
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Loyer"
+                      label="Loyer"
+                      fullWidth={true}
+                      type="number"
+                      name="rent"
                       required
                     />
                   </Grid>

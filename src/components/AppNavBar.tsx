@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  header: {
+    backgroundColor: "rgba(0,0,0,0.7)"
+  },
   toolbar: {
     minHeight: 0,
   },
@@ -38,7 +41,7 @@ const handleClick = () => {
 
   return (
     <div>
-      <AppBar position="fixed" style={styles.appBar}>
+      <AppBar position="fixed" style={styles.appBar} className={style.header}>
         <Toolbar className={styles.toolbar}>
           <IconButton
             edge="start"
@@ -49,7 +52,7 @@ const handleClick = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h5" className={style.title}>
-            Demo
+            MapMarket CRM
           </Typography>
           <Tooltip title="GitHub" aria-label="add">
             <IconButton

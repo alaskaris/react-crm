@@ -12,7 +12,7 @@ const blue600 = blue["800"];
 const useStyles = makeStyles(() =>
   createStyles({
     menuItem: {
-      color: blue600,
+      color: "#FBFBFB",
       fontWeight: 800,
       paddingTop: "0.2em",
       paddingBottom: "0.2em",

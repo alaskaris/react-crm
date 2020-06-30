@@ -47,26 +47,26 @@ const DashboardPage = () => {
           <InfoBox
             Icon={ShoppingCart}
             spanBgColor={pink600}
-            title="Total Profit"
-            value="1500k"
+            title="Nombre total de contrats"
+            value="20690"
           />
         </Grid>
         <Grid item style={styles.cell} xs={12} md={3}>
-          <InfoBox Icon={ThumbUp} spanBgColor={cyan600} title="Likes" value="4231" />
+          <InfoBox Icon={ThumbUp} spanBgColor={cyan600} title="Offres aux contrats" value="4231" />
         </Grid>
         <Grid item style={styles.cell} xs={12} md={3}>
           <InfoBox
             Icon={Assessment}
             spanBgColor={purple600}
-            title="Sales"
-            value="460"
+            title="Offres"
+            value="1589"
           />
         </Grid>
         <Grid item style={styles.cell} xs={12} md={3}>
           <InfoBox
             Icon={Face}
             spanBgColor={orange600}
-            title="New Members"
+            title="Nouveaux clients"
             value="248"
           />
         </Grid>

@@ -25,7 +25,7 @@ const styles = listPageStyle;
 const defaultProps = {
   model: 'product',
   dataKeys: ['name', 'category.name', 'unitPrice', 'numInStock','actions'],
-  headers: ['Product Name', 'Category Name', 'Price', 'Total In Stock', 'Actions'],
+  headers: ['Nom', 'Type', 'Superficie', 'CP', 'Actions'],
 };
 
 type DefaultProps = typeof defaultProps;
@@ -196,7 +196,7 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     const { isFetching, page, totalPages, items } = this.state;
 
     return (
-      <PageBase title={'Products (' + productList.length + ')'} navigation="React CRM / Product">
+      <PageBase title={'Produits (' + productList.length + ')'} navigation="MapMarket CRM / Produit">
         {isFetching ? (
           <div>
             <SkeletonList />

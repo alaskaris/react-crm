@@ -31,8 +31,8 @@ const defaultProps = {
   model: "customer",
   dataKeys: [
     "avatar",
-    "firstname",
     "lastname",
+    "firstname",
     "email",
     "mobile",
     "membership",
@@ -40,11 +40,11 @@ const defaultProps = {
   ],
   headers: [
     "",
-    "First Name",
-    "Last Name",
-    "Email",
-    "Mobile",
-    "Membership",
+    "Nom",
+    "Prénom",
+    "Mail",
+    "Téléphone",
+    "En cours",
     "Actions",
   ],
 };
@@ -222,8 +222,8 @@ class CustomerListPage extends React.Component<
 
     return (
       <PageBase
-        title={"Customers (" + customerList.length + ")"}
-        navigation="React CRM / Customer"
+        title={"Clients (" + customerList.length + ")"}
+        navigation="MapMarket CRM / Client"
       >
         {isFetching ? (
           <div>
@@ -232,7 +232,7 @@ class CustomerListPage extends React.Component<
         ) : (
           <div>
             <div>
-              <Tooltip title="Add" aria-label="add">
+              <Tooltip title="Ajouter" aria-label="add">
                 <Fab
                   size="small"
                   color="secondary"
@@ -242,7 +242,7 @@ class CustomerListPage extends React.Component<
                   <ContentAdd />
                 </Fab>
               </Tooltip>
-              <Tooltip title="Search" aria-label="search">
+              <Tooltip title="Chercher" aria-label="search">
                 <Fab
                   size="small"
                   style={styles.fabSearch}

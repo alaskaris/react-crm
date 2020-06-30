@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
     },
     drawerPaper: {
       width: drawerWidth,
-      backgroundColor: "rgba(227, 231, 232, 1)",
+      backgroundColor: "rgba(0,0,0,0.7)",
       overflow: "auto",
     },
     user: {

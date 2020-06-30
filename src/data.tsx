@@ -17,9 +17,9 @@ const purple600 = purple['600'];
 const data = {
   menus: [
     { text: "DashBoard", icon: <Assessment />, link: "/dashboard" },
-    { text: "Customer", icon: <PermIdentity />, link: "/customers" },
-    { text: "Order", icon: <ShoppingCartOutlinedIcon />, link: "/orders" },
-    { text: "Product", icon: <StoreOutlinedIcon />, link: "/products" },
+    { text: "Client", icon: <PermIdentity />, link: "/customers" },
+    { text: "Offre", icon: <ShoppingCartOutlinedIcon />, link: "/orders" },
+    { text: "Produit", icon: <StoreOutlinedIcon />, link: "/products" },
     { text: "About", icon: <InfoOutlinedIcon />, link: "/about" }
   ],
   userMenus: [
@@ -84,9 +84,9 @@ const data = {
       { pv: 4300 }
     ],
     browserUsage: [
-      { name: "Chrome", value: 800, color: cyan600, icon: <ExpandMore /> },
-      { name: "Firefox", value: 300, color: pink600, icon: <ChevronRight /> },
-      { name: "Safari", value: 300, color: purple600, icon: <ExpandLess /> }
+      { name: "Local d'activité", value: 800, color: cyan600, icon: <ExpandMore /> },
+      { name: "Local vacant", value: 300, color: pink600, icon: <ChevronRight /> },
+      { name: "Terrain", value: 300, color: purple600, icon: <ExpandLess /> }
     ],
     lineBarChart: [
       { name: "Page A", uv: 590, pv: 800, amt: 1400 },

@@ -80,7 +80,7 @@ function DataTable<DataTableProps>({
     } else if (dataKey === "actions") {
       return (
         <>
-          <Tooltip title="Edit" aria-label="edit">
+          <Tooltip title="Éditer" aria-label="edit">
             <Fab
               size="small"
               style={styles.editButton}
@@ -91,7 +91,7 @@ function DataTable<DataTableProps>({
               <ContentCreate />
             </Fab>
           </Tooltip>
-          <Tooltip title="Delete" aria-label="delete">
+          <Tooltip title="Supprimer" aria-label="delete">
             <Fab
               size="small"
               style={styles.deleteButton}
