@@ -42,6 +42,7 @@ storiesOf("DataTable", module)
       totalPages={2}
       onDelete={action("delete button click")}
       onPageChange={action("pagination click")}
+      onSelect={action("selection changed")}
     />
   ))
   .add("with data only ", () => (
@@ -54,6 +55,7 @@ storiesOf("DataTable", module)
       totalPages={2}
       onDelete={action("delete button click")}
       onPageChange={action("pagination click")}
+      onSelect={action("selection changed")}
     />
   ))
   .add("with data and actions ", () => (
@@ -66,6 +68,7 @@ storiesOf("DataTable", module)
       totalPages={2}
       onDelete={action("delete button click")}
       onPageChange={action("pagination click")}
+      onSelect={action("selection changed")}
     />
   ),
   {

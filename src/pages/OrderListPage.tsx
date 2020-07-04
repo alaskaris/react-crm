@@ -89,6 +89,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
     this.handleSearchFilter = this.handleSearchFilter.bind(this);
     this.clearSearchFilter = this.clearSearchFilter.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
+    this.onSelectedListChange = this.onSelectedListChange.bind(this);
     this.openDialog = this.openDialog.bind(this);
   }
 
@@ -142,6 +143,10 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
     const endIndex = startIndex + 10;
     const items = this.props.orderList.slice(startIndex, endIndex);
     this.setState({ page, items });
+  }
+
+  onSelectedListChange(_event: React.ChangeEvent<unknown>, value: string) {
+    console.log('selected value' + value);
   }
 
   openDialog(_event: React.ChangeEvent<unknown>, value: number) {
@@ -266,6 +271,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
               totalPages={totalPages}
               onDelete={this.openDialog}
               onPageChange={this.onPageChange}
+              onSelect = {this.onSelectedListChange}
             />
 
             <DeleteDialog

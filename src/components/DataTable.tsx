@@ -12,6 +12,7 @@ import CheckCircle from "@material-ui/icons/CheckCircle";
 import Cancel from "@material-ui/icons/Cancel";
 import { pink, grey, green, common } from "@material-ui/core/colors";
 import { Container, Tooltip } from "@material-ui/core";
+import { Checkbox } from "@material-ui/core";
 
 const grey500 = grey["500"];
 const green400 = green["400"];
@@ -70,6 +71,7 @@ function DataTable<DataTableProps>({
   headers,
   onPageChange,
   onDelete,
+  onSelect
 }) {
   // =>
   const renderData = (dataKey: string, data: TODO) => {
@@ -85,8 +87,8 @@ function DataTable<DataTableProps>({
               size="small"
               style={styles.editButton}
               // ?path=/story/ is used for storybook 
-              href={ model 
-                && model.includes("?path=/story/") ?`${model}`: `${model}/${data.id}`}
+              href={model
+                && model.includes("?path=/story/") ? `${model}` : `${model}/${data.id}`}
             >
               <ContentCreate />
             </Fab>
@@ -101,6 +103,16 @@ function DataTable<DataTableProps>({
               <ActionDelete />
             </Fab>
           </Tooltip>
+        </>
+      );
+    } else if (dataKey === "selection") {
+      return (
+        <>
+            <Checkbox
+              value = {data.id}
+              inputProps={{ 'aria-label': 'Select ' + data.id }}
+              onChange={(e) => onSelect(e, data.id)}
+            />
         </>
       );
     } else {
@@ -148,12 +160,12 @@ function DataTable<DataTableProps>({
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell colSpan={headerCount}>
-                <p style={{ textAlign: "center" }}>No Data Found !</p>
-              </TableCell>
-            </TableRow>
-          )}
+              <TableRow>
+                <TableCell colSpan={headerCount}>
+                  <p style={{ textAlign: "center" }}>No Data Found !</p>
+                </TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
 

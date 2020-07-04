@@ -31,6 +31,7 @@ const defaultProps = {
   model: "customer",
   dataKeys: [
     "avatar",
+    "selection",
     "lastname",
     "firstname",
     "email",
@@ -40,6 +41,7 @@ const defaultProps = {
   ],
   headers: [
     "",
+    "-",
     "Nom",
     "Prénom",
     "Mail",
@@ -60,6 +62,8 @@ type CustomerListProps = {
   newCustomer: typeof thunkApiCall;
   errorMessage: string;
   deleted: boolean;
+  exportSelected: typeof thunkApiCall;
+  selected: number[];
 } & DefaultProps;
 
 interface CustomerListState {
@@ -79,12 +83,13 @@ interface CustomerListState {
       lastname: string;
     };
   };
+  selected: number[];
 }
 
 class CustomerListPage extends React.Component<
   CustomerListProps,
   CustomerListState
-> {
+  > {
   constructor(props) {
     super(props);
     this.handleToggle = this.handleToggle.bind(this);
@@ -96,6 +101,7 @@ class CustomerListPage extends React.Component<
     this.handleSearchFilter = this.handleSearchFilter.bind(this);
     this.clearSearchFilter = this.clearSearchFilter.bind(this);
     this.openDialog = this.openDialog.bind(this);
+    this.onSelectedListChange = this.onSelectedListChange.bind(this);
   }
 
   static defaultProps = defaultProps;
@@ -117,6 +123,7 @@ class CustomerListPage extends React.Component<
         lastname: "",
       },
     },
+    selected: []
   };
 
   componentDidMount() {
@@ -132,7 +139,8 @@ class CustomerListPage extends React.Component<
       const totalPages = Math.ceil(this.props.customerList.length / 10);
       const items = this.props.customerList.slice(0, 10);
       const isFetching = this.props.isFetching;
-      this.setState({ page, totalPages, items, isFetching });
+      const selected = this.props.selected;
+      this.setState({ page, totalPages, items, isFetching , selected});
     }
     console.log(" this.props.deleted " + this.props.deleted);
 
@@ -152,6 +160,16 @@ class CustomerListPage extends React.Component<
     this.setState({ page, items });
   }
 
+  onSelectedListChange(_event: React.ChangeEvent<unknown>, value: number) {
+    console.log('selected is ',value);
+    const index = this.props.selected.indexOf(value);
+    if (index > -1) {
+      this.props.selected.splice(index, 1);
+      // this.setState({ selected });
+    }
+    console.log('Selected array now is ',this.props.selected);
+  }
+  
   openDialog(_event: React.ChangeEvent<unknown>, value: number) {
     if (value != null && value > 0) {
       this.setState({ open: true, customerId: value });
@@ -230,107 +248,108 @@ class CustomerListPage extends React.Component<
             <SkeletonList />
           </div>
         ) : (
-          <div>
             <div>
-              <Tooltip title="Ajouter" aria-label="add">
-                <Fab
-                  size="small"
-                  color="secondary"
-                  style={styles.fab}
-                  onClick={this.handleNewCustomer}
-                >
-                  <ContentAdd />
-                </Fab>
-              </Tooltip>
-              <Tooltip title="Chercher" aria-label="search">
-                <Fab
-                  size="small"
-                  style={styles.fabSearch}
-                  onClick={this.handleToggle}
-                >
-                  <Search />
-                </Fab>
-              </Tooltip>
-            </div>
-            <Snackbar
-              open={this.state.snackbarOpen}
-              autoHideDuration={this.state.autoHideDuration}
-              onClose={this.onSnackBarClose}
-            >
-              <Alert onClose={this.onSnackBarClose} severity="success">
-                The operation completed successfully !
-              </Alert>
-            </Snackbar>
-            <DataTable
-              model={model}
-              items={items}
-              dataKeys={dataKeys}
-              headers={headers}
-              page={page}
-              totalPages={totalPages}
-              onDelete={this.openDialog}
-              onPageChange={this.onPageChange}
-            />
-
-            <DeleteDialog
-              open={this.state.open}
-              closeDialog={this.closeDialog}
-            />
-
-            <React.Fragment>
-              <Drawer
-                anchor="right"
-                open={this.state.searchOpen}
-                onClose={this.handleToggle}
-                style={styles.searchDrawer}
+              <div>
+                <Tooltip title="Ajouter" aria-label="add">
+                  <Fab
+                    size="small"
+                    color="secondary"
+                    style={styles.fab}
+                    onClick={this.handleNewCustomer}
+                  >
+                    <ContentAdd />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Chercher" aria-label="search">
+                  <Fab
+                    size="small"
+                    style={styles.fabSearch}
+                    onClick={this.handleToggle}
+                  >
+                    <Search />
+                  </Fab>
+                </Tooltip>
+              </div>
+              <Snackbar
+                open={this.state.snackbarOpen}
+                autoHideDuration={this.state.autoHideDuration}
+                onClose={this.onSnackBarClose}
               >
-                <Grid container spacing={0} style={styles.searchGrid}>
-                  <Grid item style={styles.searchField}>
-                    <h5>Search</h5>
-                  </Grid>
-                  <Grid item xs={12} style={styles.searchField}>
-                    <TextField
-                      placeholder="First Name"
-                      label="First Name"
-                      name="firstname"
-                      fullWidth={true}
-                      value={this.state.search.contain.firstname}
-                      onChange={this.handleSearchFilter}
-                    />
-                  </Grid>
-                  <Grid item xs={12} style={styles.searchField}>
-                    <TextField
-                      placeholder="Last Name"
-                      label="Last Name"
-                      fullWidth={true}
-                      name="lastname"
-                      value={this.state.search.contain.lastname}
-                      onChange={this.handleSearchFilter}
-                    />
-                  </Grid>
-                  <Divider />
-                  <Grid item xs={12} style={styles.searchField}>
-                    <Button
-                      variant="contained"
-                      onClick={this.handleSearch}
-                      color="secondary"
-                      style={styles.searchButton}
-                    >
-                      Search
+                <Alert onClose={this.onSnackBarClose} severity="success">
+                  The operation completed successfully !
+              </Alert>
+              </Snackbar>
+              <DataTable
+                model={model}
+                items={items}
+                dataKeys={dataKeys}
+                headers={headers}
+                page={page}
+                totalPages={totalPages}
+                onDelete={this.openDialog}
+                onPageChange={this.onPageChange}
+                onSelect={this.onSelectedListChange}
+              />
+
+              <DeleteDialog
+                open={this.state.open}
+                closeDialog={this.closeDialog}
+              />
+
+              <React.Fragment>
+                <Drawer
+                  anchor="right"
+                  open={this.state.searchOpen}
+                  onClose={this.handleToggle}
+                  style={styles.searchDrawer}
+                >
+                  <Grid container spacing={0} style={styles.searchGrid}>
+                    <Grid item style={styles.searchField}>
+                      <h5>Search</h5>
+                    </Grid>
+                    <Grid item xs={12} style={styles.searchField}>
+                      <TextField
+                        placeholder="First Name"
+                        label="First Name"
+                        name="firstname"
+                        fullWidth={true}
+                        value={this.state.search.contain.firstname}
+                        onChange={this.handleSearchFilter}
+                      />
+                    </Grid>
+                    <Grid item xs={12} style={styles.searchField}>
+                      <TextField
+                        placeholder="Last Name"
+                        label="Last Name"
+                        fullWidth={true}
+                        name="lastname"
+                        value={this.state.search.contain.lastname}
+                        onChange={this.handleSearchFilter}
+                      />
+                    </Grid>
+                    <Divider />
+                    <Grid item xs={12} style={styles.searchField}>
+                      <Button
+                        variant="contained"
+                        onClick={this.handleSearch}
+                        color="secondary"
+                        style={styles.searchButton}
+                      >
+                        Search
                     </Button>
-                    <Button
-                      variant="contained"
-                      onClick={this.clearSearchFilter}
-                      color="default"
-                    >
-                      Cancel
+                      <Button
+                        variant="contained"
+                        onClick={this.clearSearchFilter}
+                        color="default"
+                      >
+                        Cancel
                     </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Drawer>
-            </React.Fragment>
-          </div>
-        )}
+                </Drawer>
+              </React.Fragment>
+            </div>
+          )}
       </PageBase>
     );
   }
@@ -343,6 +362,7 @@ function mapStateToProps(state) {
     errorMessage,
     user,
     deleted,
+    selected,
   } = state.customer;
 
   return {
@@ -351,6 +371,7 @@ function mapStateToProps(state) {
     errorMessage,
     user,
     deleted,
+    selected
   };
 }
 
@@ -359,6 +380,7 @@ function mapDispatchToProps(dispatch) {
     searchCustomer: (action?: TODO) => dispatch(thunkApiCall(action)),
     deleteCustomer: (action: TODO) => dispatch(thunkApiCall(action)),
     newCustomer: (action?: TODO) => dispatch(thunkApiCall(action)),
+    exportSelected: (action?: TODO) => dispatch(thunkApiCall(action)),
   };
 }
 

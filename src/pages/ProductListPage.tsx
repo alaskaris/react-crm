@@ -73,6 +73,7 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     this.clearSearchFilter = this.clearSearchFilter.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.handleNewProduct = this.handleNewProduct.bind(this);
+    this.onSelectedListChange = this.onSelectedListChange.bind(this);
   }
 
   static defaultProps = defaultProps;
@@ -123,6 +124,10 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     const endIndex = startIndex + 10;
     const items = this.props.productList.slice(startIndex, endIndex);
     this.setState({ page, items });
+  }
+
+  onSelectedListChange(_event: React.ChangeEvent<unknown>, value: string) {
+    console.log('selected value' + value);
   }
 
   openDialog(_event: React.ChangeEvent<unknown>, value: number) {
@@ -223,6 +228,7 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
               totalPages={totalPages}
               onDelete={this.openDialog}
               onPageChange={this.onPageChange}
+              onSelect={this.onSelectedListChange}
             />
 
             <DeleteDialog open={this.state.open} closeDialog={this.closeDialog} />
