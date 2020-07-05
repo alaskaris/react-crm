@@ -111,7 +111,7 @@ function DataTable<DataTableProps>({
             <Checkbox
               value = {data.id}
               inputProps={{ 'aria-label': 'Select ' + data.id }}
-              onChange={(e) => onSelect(e, data.id)}
+              onChange={(e) => onSelect(e, data)}
             />
         </>
       );

@@ -2,6 +2,7 @@ import React from "react";
 import Fab from "@material-ui/core/Fab";
 import ContentAdd from "@material-ui/icons/Add";
 import Search from "@material-ui/icons/Search";
+import Export from '@material-ui/icons/Archive';
 import PageBase from "../components/PageBase";
 import { connect } from "react-redux";
 import { getAction } from "../actions/customer";
@@ -30,7 +31,6 @@ const styles = listPageStyle;
 const defaultProps = {
   model: "customer",
   dataKeys: [
-    "avatar",
     "selection",
     "lastname",
     "firstname",
@@ -41,7 +41,6 @@ const defaultProps = {
   ],
   headers: [
     "",
-    "-",
     "Nom",
     "Prénom",
     "Mail",
@@ -63,7 +62,6 @@ type CustomerListProps = {
   errorMessage: string;
   deleted: boolean;
   exportSelected: typeof thunkApiCall;
-  selected: number[];
 } & DefaultProps;
 
 interface CustomerListState {
@@ -83,7 +81,6 @@ interface CustomerListState {
       lastname: string;
     };
   };
-  selected: number[];
 }
 
 class CustomerListPage extends React.Component<
@@ -102,8 +99,10 @@ class CustomerListPage extends React.Component<
     this.clearSearchFilter = this.clearSearchFilter.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.onSelectedListChange = this.onSelectedListChange.bind(this);
+    this.handleExportCustomers = this.handleExportCustomers.bind(this);
   }
 
+  selected: Customer[] = new Array();
   static defaultProps = defaultProps;
 
   state: CustomerListState = {
@@ -122,8 +121,7 @@ class CustomerListPage extends React.Component<
         firstname: "",
         lastname: "",
       },
-    },
-    selected: []
+    }
   };
 
   componentDidMount() {
@@ -139,8 +137,7 @@ class CustomerListPage extends React.Component<
       const totalPages = Math.ceil(this.props.customerList.length / 10);
       const items = this.props.customerList.slice(0, 10);
       const isFetching = this.props.isFetching;
-      const selected = this.props.selected;
-      this.setState({ page, totalPages, items, isFetching , selected});
+      this.setState({ page, totalPages, items, isFetching });
     }
     console.log(" this.props.deleted " + this.props.deleted);
 
@@ -160,16 +157,17 @@ class CustomerListPage extends React.Component<
     this.setState({ page, items });
   }
 
-  onSelectedListChange(_event: React.ChangeEvent<unknown>, value: number) {
-    console.log('selected is ',value);
-    const index = this.props.selected.indexOf(value);
+  onSelectedListChange(_event: React.ChangeEvent<unknown>, value: Customer) {
+    console.log('selected is ', value);
+    const index = this.selected.indexOf(value);
     if (index > -1) {
-      this.props.selected.splice(index, 1);
-      // this.setState({ selected });
+      this.selected.splice(index, 1);
+    } else {
+      this.selected.push(value);
     }
-    console.log('Selected array now is ',this.props.selected);
+    console.log('Selected array now is ', this.selected);
   }
-  
+
   openDialog(_event: React.ChangeEvent<unknown>, value: number) {
     if (value != null && value > 0) {
       this.setState({ open: true, customerId: value });
@@ -232,6 +230,17 @@ class CustomerListPage extends React.Component<
     this.props.history.push("/newcustomer");
   }
 
+  handleExportCustomers() {
+    if (this.selected) {
+      let rows = new Array();
+      this.selected.forEach(customer => {
+        rows.push(new Array(customer.firstname, customer.lastname, customer.email));
+      });
+      exportToCsv("customer.csv", rows);
+    }
+  }
+
+
   render() {
     const { customerList, headers, dataKeys, model } = this.props;
     const { isFetching, page, totalPages, items } = this.state;
@@ -267,6 +276,15 @@ class CustomerListPage extends React.Component<
                     onClick={this.handleToggle}
                   >
                     <Search />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Exporter" aria-label="export">
+                  <Fab
+                    size="small"
+                    style={styles.fabExport}
+                    onClick={this.handleExportCustomers}
+                  >
+                    <Export />
                   </Fab>
                 </Tooltip>
               </div>
@@ -382,6 +400,47 @@ function mapDispatchToProps(dispatch) {
     newCustomer: (action?: TODO) => dispatch(thunkApiCall(action)),
     exportSelected: (action?: TODO) => dispatch(thunkApiCall(action)),
   };
+}
+
+function exportToCsv(filename, rows) {
+  var processRow = function (row) {
+    var finalVal = '';
+    for (var j = 0; j < row.length; j++) {
+      var innerValue = row[j] === null ? '' : row[j].toString();
+      if (row[j] instanceof Date) {
+        innerValue = row[j].toLocaleString();
+      };
+      var result = innerValue.replace(/"/g, '""');
+      if (result.search(/("|,|\n)/g) >= 0)
+        result = '"' + result + '"';
+      if (j > 0)
+        finalVal += ',';
+      finalVal += result;
+    }
+    return finalVal + '\n';
+  };
+
+  var csvFile = '';
+  for (var i = 0; i < rows.length; i++) {
+    csvFile += processRow(rows[i]);
+  }
+
+  var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) { // IE 10+
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    var link = document.createElement("a");
+    if (link.download !== undefined) { // feature detection
+      // Browsers that support HTML5 download attribute
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerListPage);

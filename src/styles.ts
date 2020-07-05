@@ -56,6 +56,15 @@ export const listPageStyle = {
     marginRight: 20,
     backgroundColor: 'lightblue' as TODO,
   },
+  fabExport: {
+    top: 'auto' as TODO,
+    right: 180,
+    bottom: 20,
+    left: 'auto' as TODO,
+    position: 'fixed' as TODO,
+    marginRight: 20,
+    backgroundColor: 'lightgreen' as TODO,
+  },
   searchButton: {
     marginRight: 20,
   },
