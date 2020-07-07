@@ -31,6 +31,21 @@ export interface Customer extends User {
   rewards: number;
   orders?: string[];
   orderAmount: number;
+  files?: File[];
+  origin: string;
+  activitysector: string;
+  activitysetup: string;
+  type: string;
+  project: string;
+  physicallocation: string;
+  sex: string;
+  status: string;
+  age?: number;
+  firstcontact: string;
+  internalfollowup: string;
+  contactdate?: Date;
+  ackdate?: Date;
+  ackindicator: string;
 }
 
 export interface Address extends Entity {
@@ -99,7 +114,22 @@ export class CustomerModel implements Customer {
     mobile: string = "",
     rewards: number = 0,
     membership: boolean = false,
-    avatar?: string
+    avatar?: string,
+    files?: File[],
+    origin: string = "",
+    activitysector: string = "",
+    activitysetup: string = "",
+    type: string = "",
+    project: string = "",
+    physicallocation: string = "",
+    sex: string = "",
+    status: string = "",
+    age?: number,
+    firstcontact: string = "",
+    internalfollowup: string = "",
+    contactdate?: Date,
+    ackdate?: Date,
+    ackindicator: string = "",
   ) {
     this.id = 0;
     this.firstname = firstname;
@@ -110,6 +140,21 @@ export class CustomerModel implements Customer {
     this.rewards = rewards;
     this.orderAmount = 0;
     this.avatar = avatar;
+    this.files = files;
+    this.origin = origin;
+    this.activitysector = activitysector;
+    this.activitysetup = activitysetup;
+    this.type = type;
+    this.project = project;
+    this.physicallocation = physicallocation;
+    this.sex = sex;
+    this.status = status;
+    this.age = age;
+    this.firstcontact = firstcontact;
+    this.internalfollowup = internalfollowup;
+    this.contactdate = contactdate;
+    this.ackdate = ackdate;
+    this.ackindicator = ackindicator;
   }
   id: number;
   firstname: string;
@@ -122,6 +167,23 @@ export class CustomerModel implements Customer {
   rewards: number;
   orders?: string[];
   orderAmount: number;
+
+  files?: File[];
+
+  origin: string;
+  activitysector: string;
+  activitysetup: string;
+  type: string;
+  project: string;
+  physicallocation: string;
+  sex: string;
+  status: string;
+  age?: number;
+  firstcontact: string;
+  internalfollowup: string;
+  contactdate?: Date;
+  ackdate?: Date;
+  ackindicator: string;  
 }
 
 export class OrderModel implements Order {

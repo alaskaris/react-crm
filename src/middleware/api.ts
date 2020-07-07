@@ -7,7 +7,11 @@ import querystring from 'querystring';
 import { HttpMethod } from "../store/types";
 import { getSeachFilters } from "../utils/app-utils";
 
-const ds = Object.assign({}, DB)
+// const ds = Object.assign({}, DB)
+
+if (!localStorage.getItem('ds'))
+  localStorage.setItem('ds', JSON.stringify(Object.assign({}, DB)));
+
 const EXPAND = "_expand"
 
 function getModel(action: string) {
@@ -46,7 +50,8 @@ function parseRequest(req: string) {
 }
 
 export function getData(action: string): Promise<TODO> {
-  const { model, id, exp , filters} = parseRequest(action)
+  const ds = JSON.parse(localStorage.getItem('ds'));
+  const { model, id, exp, filters } = parseRequest(action)
   return new Promise(function (resolve, _reject) {
     const expandModel = exp
       ? exp === "category"
@@ -54,14 +59,55 @@ export function getData(action: string): Promise<TODO> {
         : exp + "s"
       : exp;
 
-    
-      let result: TODO;
+
+    let result: TODO;
     let expand: string, expandId: number;
-    
+
     if (model in ds) {
       if (id && id > 0) {
-        result =
-          ds[model][ds[model].findIndex((d: { id: number }) => d.id === id)];
+        result = ds[model][ds[model].findIndex((d: { id: number }) => d.id === id)];
+
+        if (model == 'customers') {
+          if (result.files) {
+            let newfiles: File[] = [];
+            result.files.forEach(f => {
+              if (f.path) {
+                const filename = f.path.split(".")[0];
+                const filetype = f.path.split(".")[1];
+                let httpType = "application/octet-stream";
+                switch (filetype) {
+                  case "png":
+                    httpType = "image/png";
+                    break;
+                  case "jpg":
+                    httpType = "image/jpeg";
+                    break;
+                  case "pdf":
+                    httpType = "application/pdf";
+                    break;
+                  case "doc":
+                    httpType = "application/msword";
+                    break;
+                  case "zip":
+                    httpType = "application/zip";
+                    break;
+                  case "xls":
+                    httpType = "application/vnd.ms-excel";
+                    break;
+                  case "csv":
+                    httpType = "text/csv";
+                    break;
+                  case "docx":
+                    httpType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                }
+                const a = new File([filename], f.path, { type: httpType });
+                newfiles.push(a);
+              }
+            });
+            result.files = newfiles;
+          }
+        }
+
         if (expandModel) {
           expand =
             expandModel === "categories"
@@ -94,7 +140,7 @@ export function getData(action: string): Promise<TODO> {
         && Object.keys(filters).length > 0) {
         result = result.filter(
           row => Object.keys(filters).every(
-            prop => filters[prop](prop,row)
+            prop => filters[prop](prop, row)
           )
         )
       }
@@ -104,34 +150,41 @@ export function getData(action: string): Promise<TODO> {
 }
 
 export function postData(action: string, data: Entity): Promise<TODO> {
+  const ds = JSON.parse(localStorage.getItem('ds'));
   const { model } = parseRequest(action)
   return new Promise(function (resolve, _reject) {
     ds[model].push(data);
+    localStorage.setItem('ds', JSON.stringify(ds));
     setTimeout(resolve, 300, { data: data });
   });
 }
 
 export function putData(action: string, data: Entity): Promise<TODO> {
+  const ds = JSON.parse(localStorage.getItem('ds'));
   const { model, id } = parseRequest(action)
   return new Promise(function (resolve, _reject) {
-    const idx = ds[model].findIndex((d: { id: number }) => d.id === id);
+    const idx = ds[model].findIndex((d: { id: number }) => d.id === (id ? id : data.id));
     ds[model][idx] = Object.assign({}, data);
+    localStorage.setItem('ds', JSON.stringify(ds));
     setTimeout(resolve, 300, { data: data });
   });
 }
 
 export function deleteData(action: string): Promise<TODO> {
+  const ds = JSON.parse(localStorage.getItem('ds'));
   const { model, id } = parseRequest(action)
   return new Promise(function (resolve, _reject) {
     if (id > 0) {
       ds[model].splice(ds[model].findIndex((d: Entity) => d.id === id), 1);
     }
+    localStorage.setItem('ds', JSON.stringify(ds));
     setTimeout(resolve, 300, { data: id });
   });
 }
 
 export function login(action: string, _method: HttpMethod, data: TODO): Promise<TODO> {
   return new Promise(function (resolve, _reject) {
+    const ds = JSON.parse(localStorage.getItem('ds'));
     if (data.username === "admin@test.com" && data.password === "password") {
       const { accessToken: accessToken, user } = ds.token;
       setTimeout(resolve, 300, {

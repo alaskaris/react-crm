@@ -26,6 +26,7 @@ import {
 import Alert from "@material-ui/lab/Alert";
 import SkeletonForm from "../components/SkeletonForm";
 import { formPageStyles } from "../styles";
+import {DropzoneArea} from 'material-ui-dropzone'
 
 const styles = formPageStyles;
 
@@ -98,6 +99,10 @@ class CustomerFormPage extends React.Component<
   //   // else this.props.addCustomer(this.state.customer);
   // }
 
+  onUploadDocument(files) {
+    this.state.customer.files = files;
+  }
+
   onSnackBarClose() {
     this.setState({
       snackbarOpen: false,
@@ -145,6 +150,7 @@ class CustomerFormPage extends React.Component<
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
+              values.files = this.state.customer.files;
               this.onSave(values);
               setTimeout(() => {
                 setSubmitting(false);
@@ -324,12 +330,20 @@ class CustomerFormPage extends React.Component<
                       name="age"
                     />
                   </Grid>
-                  <Grid item style={styles.cell} xs={12} md={4}>
+                  {/* <Grid item style={styles.cell} xs={12} md={4}>
                     {customer.avatar && (
                       <Card style={styles.card}>
                         <img width={100} src={customer.avatar} />
                       </Card>
                     )}
+                  </Grid> */}
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                  <DropzoneArea dropzoneText="Glisser-déposer un fichier ici ou cliquer" 
+                    acceptedFiles={['image/jpeg', 'image/png', 'application/pdf', 'application/msword', 'application/zip', 'application/vnd.ms-excel','text/csv','application/vnd.openxmlformats-officedocument.wordprocessingml.document']} 
+                    showFileNames={true}
+                    initialFiles = {customer.files} 
+                    onChange={this.onUploadDocument.bind(this)} 
+                  />
                   </Grid>
                 </Grid>
                 <br />
