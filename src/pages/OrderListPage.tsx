@@ -287,7 +287,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
             >
               <Grid container style={styles.searchDrawer} spacing={0}>
                 <Grid item xs={12} style={styles.searchField}>
-                  <h5>Search</h5>
+                  <h5>Chercher</h5>
                 </Grid>
                 <Grid item xs={12} style={styles.searchField}>
                   <TextField
@@ -306,7 +306,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
                     onClick={this.handleSearch}
                     color="secondary"
                   >
-                    Search
+                    Chercher
                   </Button>
                   <Button
                     variant="contained"
@@ -314,7 +314,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
                     onClick={this.clearSearchFilter}
                     color="default"
                   >
-                    Cancel
+                    Annuler
                   </Button>
                 </Grid>
               </Grid>
