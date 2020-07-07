@@ -323,12 +323,12 @@ class CustomerListPage extends React.Component<
                 >
                   <Grid container spacing={0} style={styles.searchGrid}>
                     <Grid item style={styles.searchField}>
-                      <h5>Search</h5>
+                      <h5>Chercher</h5>
                     </Grid>
                     <Grid item xs={12} style={styles.searchField}>
                       <TextField
-                        placeholder="First Name"
-                        label="First Name"
+                        placeholder="Prénom"
+                        label="Prénom"
                         name="firstname"
                         fullWidth={true}
                         value={this.state.search.contain.firstname}
@@ -337,8 +337,8 @@ class CustomerListPage extends React.Component<
                     </Grid>
                     <Grid item xs={12} style={styles.searchField}>
                       <TextField
-                        placeholder="Last Name"
-                        label="Last Name"
+                        placeholder="Nom"
+                        label="Nom"
                         fullWidth={true}
                         name="lastname"
                         value={this.state.search.contain.lastname}
@@ -353,14 +353,14 @@ class CustomerListPage extends React.Component<
                         color="secondary"
                         style={styles.searchButton}
                       >
-                        Search
+                        Chercher
                     </Button>
                       <Button
                         variant="contained"
                         onClick={this.clearSearchFilter}
                         color="default"
                       >
-                        Cancel
+                        Annuler
                     </Button>
                     </Grid>
                   </Grid>
