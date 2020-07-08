@@ -13,8 +13,8 @@ import { Formik, Form, Field } from "formik";
 import { TextField, Checkbox } from "formik-material-ui";
 
 import { thunkApiCall, thunkApiQCall } from "../services/thunks";
-import { Product,  Category } from "../types";
-import { LinearProgress, Grid, MenuItem } from "@material-ui/core";
+import { Product, Category } from "../types";
+import { LinearProgress, Grid, MenuItem, CardMedia } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import {
   ApiAction,
@@ -50,7 +50,7 @@ interface ProductFormState {
 class ProductFormPage extends React.Component<
   ProductFormProps,
   ProductFormState
-> {
+  > {
   constructor(props) {
     super(props);
     this.onSnackBarClose = this.onSnackBarClose.bind(this);
@@ -88,7 +88,7 @@ class ProductFormPage extends React.Component<
 
   onSave(values: TODO) {
     const product = { ...this.state.product, ...values };
-    let action: ApiAction; 
+    let action: ApiAction;
     if (product.id > 0) {
       action = getAction(UPDATE_PRODUCT, null, product) as ApiAction;
     } else {
@@ -107,319 +107,334 @@ class ProductFormPage extends React.Component<
             <SkeletonForm />
           </div>
         ) : (
-          <Formik
-            initialValues={{
-              ...product,
-            }}
-            validate={(values) => {
-              const errors: Partial<Product> = {};
-              if (!values.name) {
-                errors.name = "Required";
-              }
-              if (!values.categoryId) {
-                errors.categoryId = "Required";
-              }
+            <Formik
+              initialValues={{
+                ...product,
+              }}
+              validate={(values) => {
+                const errors: Partial<Product> = {};
+                if (!values.name) {
+                  errors.name = "Required";
+                }
+                if (!values.categoryId) {
+                  errors.categoryId = "Required";
+                }
 
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              this.onSave(values);
-              setTimeout(() => {
-                setSubmitting(false);
-              }, 500);
-            }}
-          >
-            {({ submitForm, isSubmitting }) => (
-              <Form>
-                <Grid container style={styles.container} spacing={3}>
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      select
-                      component={TextField}
-                      as="select"
-                      label="Type"
-                      placeholder="Type"
-                      variant="outlined"
-                      fullWidth={true}
-                      name="categoryId"
+                return errors;
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                this.onSave(values);
+                setTimeout(() => {
+                  setSubmitting(false);
+                }, 500);
+              }}
+            >
+              {({ submitForm, isSubmitting }) => (
+                <Form>
+                  <Grid container style={styles.container} spacing={3}>
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        select
+                        component={TextField}
+                        as="select"
+                        label="Type"
+                        placeholder="Type"
+                        variant="outlined"
+                        fullWidth={true}
+                        name="categoryId"
+                      >
+                        {categoryList.map((category, index) => (
+                          <MenuItem
+                            key={index}
+                            value={category.id}
+                          >
+                            {category.name}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    </Grid>
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Nom"
+                        label="Nom"
+                        name="name"
+                        fullWidth={true}
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Saisie"
+                        label="Saisie"
+                        fullWidth={true}
+                        type="date"
+                        name="entrydate"
+                        required
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Mise à jour"
+                        label="Mise à jour"
+                        fullWidth={true}
+                        type="date"
+                        name="lastupdated"
+                        required
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Rédacteur"
+                        label="Rédacteur"
+                        fullWidth={true}
+                        type="string"
+                        name="updatedby"
+                        required
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Adresse"
+                        label="Adresse"
+                        fullWidth={true}
+                        type="string"
+                        name="address"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="CP"
+                        label="CP"
+                        fullWidth={true}
+                        type="string"
+                        name="postalcode"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Ville"
+                        label="Ville"
+                        fullWidth={true}
+                        type="string"
+                        name="city"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Pas de porte"
+                        label="Pas de porte"
+                        fullWidth={true}
+                        type="boolean"
+                        name="hasdoor"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        label="Parking"
+                        fullWidth={true}
+                        name="hasparking"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Nom propriétaire / Agence"
+                        label="Nom propriétaire / Agence"
+                        fullWidth={true}
+                        type="string"
+                        name="owner"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Téléphone"
+                        label="Téléphone"
+                        fullWidth={true}
+                        type="string"
+                        name="phone"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Adresse mail"
+                        label="Adresse mail"
+                        fullWidth={true}
+                        type="string"
+                        name="entrydate"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Commentaires"
+                        label="Commentaires"
+                        fullWidth={true}
+                        type="string"
+                        name="comments"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Lien offre"
+                        label="Lien offre"
+                        fullWidth={true}
+                        type="string"
+                        name="offerlink"
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Superficie"
+                        label="Superficie"
+                        fullWidth={true}
+                        type="number"
+                        name="unitPrice"
+                        required
+                      />
+                    </Grid>
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Prix de vente"
+                        label="Prix de vente"
+                        fullWidth={true}
+                        type="number"
+                        name="numInStock"
+                        required
+                      />
+                    </Grid>
+                    <Grid item style={styles.cell} xs={12} md={4}>
+                      <Field
+                        variant="outlined"
+                        component={TextField}
+                        placeholder="Loyer"
+                        label="Loyer"
+                        fullWidth={true}
+                        type="number"
+                        name="rent"
+                        required
+                      />
+                    </Grid>
+                  </Grid>
+
+                  {product && (product.id == 1) && (
+                    <p style={styles.productList}>Photos </p>
+                  )}
+                  {product && (product.id == 1) && (
+                    <Divider />
+                  )}
+                  {product && (product.id == 1) && (
+                    <Grid container style={styles.container} spacing={3}>
+                      <Grid item style={styles.cell} xs={12} md={4}>
+                        <img width={300} src="/assets/pictures/Office1.jpg" />
+                      </Grid>
+
+                      <Grid item style={styles.cell} xs={12} md={4}>
+                        <img width={300} src="/assets/pictures/Office2.jpg" />
+                      </Grid>
+
+                      <Grid item style={styles.cell} xs={12} md={4}>
+                        <img width={300} src="/assets/pictures/Office3.jpg" />
+                      </Grid>
+                    </Grid>
+                  )}
+
+                  <br />
+                  <Divider />
+                  {isSubmitting && <LinearProgress />}
+                  <br />
+
+                  <div style={styles.buttons}>
+                    <Link to="/products">
+                      <Button variant="contained">
+                        <ArrowBackIosIcon /> Back{" "}
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="contained"
+                      style={styles.saveButton}
+                      onClick={submitForm}
+                      color="primary"
+                      disabled={isSubmitting}
                     >
-                      {categoryList.map((category, index) => (
-                        <MenuItem
-                          key={index}
-                          value={category.id}
-                        >
-                          {category.name}
-                        </MenuItem>
-                      ))}
-                    </Field>
-                  </Grid>
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Nom"
-                      label="Nom"
-                      name="name"
-                      fullWidth={true}
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Saisie"
-                      label="Saisie"
-                      fullWidth={true}
-                      type="date"
-                      name="entrydate"
-                      required
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Mise à jour"
-                      label="Mise à jour"
-                      fullWidth={true}
-                      type="date"
-                      name="lastupdated"
-                      required
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Rédacteur"
-                      label="Rédacteur"
-                      fullWidth={true}
-                      type="string"
-                      name="updatedby"
-                      required
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Adresse"
-                      label="Adresse"
-                      fullWidth={true}
-                      type="string"
-                      name="address"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="CP"
-                      label="CP"
-                      fullWidth={true}
-                      type="string"
-                      name="postalcode"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Ville"
-                      label="Ville"
-                      fullWidth={true}
-                      type="string"
-                      name="city"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Pas de porte"
-                      label="Pas de porte"
-                      fullWidth={true}
-                      type="boolean"
-                      name="hasdoor"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      label="Parking"
-                      fullWidth={true}
-                      name="hasparking"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Nom propriétaire / Agence"
-                      label="Nom propriétaire / Agence"
-                      fullWidth={true}
-                      type="string"
-                      name="owner"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Téléphone"
-                      label="Téléphone"
-                      fullWidth={true}
-                      type="string"
-                      name="phone"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Adresse mail"
-                      label="Adresse mail"
-                      fullWidth={true}
-                      type="string"
-                      name="entrydate"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Commentaires"
-                      label="Commentaires"
-                      fullWidth={true}
-                      type="string"
-                      name="comments"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Lien offre"
-                      label="Lien offre"
-                      fullWidth={true}
-                      type="string"
-                      name="offerlink"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Superficie"
-                      label="Superficie"
-                      fullWidth={true}
-                      type="number"
-                      name="unitPrice"
-                      required
-                    />
-                  </Grid>
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Prix de vente"
-                      label="Prix de vente"
-                      fullWidth={true}
-                      type="number"
-                      name="numInStock"
-                      required
-                    />
-                  </Grid>
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
-                      component={TextField}
-                      placeholder="Loyer"
-                      label="Loyer"
-                      fullWidth={true}
-                      type="number"
-                      name="rent"
-                      required
-                    />
-                  </Grid>
-
-                  <Grid item style={styles.cell} xs={12} md={4}>
-                    {product && product.avatar && (
-                      <Card style={styles.card}>
-                        <img width={100} src={product.avatar} />
-                      </Card>
-                    )}
-                  </Grid>
-                </Grid>
-                <br />
-                <Divider />
-                {isSubmitting && <LinearProgress />}
-                <br />
-
-                <div style={styles.buttons}>
-                  <Link to="/products">
-                    <Button variant="contained">
-                      <ArrowBackIosIcon /> Back{" "}
-                    </Button>
-                  </Link>
-                  <Button
-                    variant="contained"
-                    style={styles.saveButton}
-                    onClick={submitForm}
-                    color="primary"
-                    disabled={isSubmitting}
-                  >
-                    <SaveIcon /> Save
+                      <SaveIcon /> Save
                   </Button>
-                </div>
-                <Snackbar
-                  open={this.state.snackbarOpen}
-                  autoHideDuration={this.state.autoHideDuration}
-                  onClose={this.onSnackBarClose}
-                >
-                  <Alert onClose={this.onSnackBarClose} severity="success">
-                    Opération réalisée avec succès
+                  </div>
+                  <Snackbar
+                    open={this.state.snackbarOpen}
+                    autoHideDuration={this.state.autoHideDuration}
+                    onClose={this.onSnackBarClose}
+                  >
+                    <Alert onClose={this.onSnackBarClose} severity="success">
+                      Opération réalisée avec succès
                   </Alert>
-                </Snackbar>
-              </Form>
-            )}
-          </Formik>
-        )}
+                  </Snackbar>
+                </Form>
+              )}
+            </Formik>
+          )}
       </PageBase>
     );
   }
