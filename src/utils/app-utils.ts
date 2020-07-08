@@ -115,11 +115,11 @@ export function buildJsonServerQuery (filters: TODO){ // (searchVm: TODO) {
 
 
 const filterFn = (op: string, value: TODO) => (prop: string,  data:TODO) => {
-  let propName =  ""
+  let propName
   switch (op) {
     case SearchFilterOps.equal:
       propName = prop.slice(0, prop.indexOf(SearchFilterOps.equal))
-      return data[propName] === value
+      return data[propName] == value
     case SearchFilterOps.contain:
       propName = prop.slice(0, prop.indexOf(SearchFilterOps.contain))
       return data[propName].toLowerCase().includes(value.toLowerCase())

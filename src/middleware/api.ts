@@ -136,8 +136,7 @@ export function getData(action: string): Promise<TODO> {
         });
       }
 
-      if (filters !== null && filters !== undefined
-        && Object.keys(filters).length > 0) {
+      if (filters !== null && filters !== undefined && Object.keys(filters).length > 0) {
         result = result.filter(
           row => Object.keys(filters).every(
             prop => filters[prop](prop, row)

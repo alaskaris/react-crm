@@ -10,14 +10,14 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import { thunkApiCall, thunkApiQCall } from '../services/thunks';
-import { NEW_PRODUCT, LIST_PRODUCT, ApiAction, QActions, FETCHING_PRODUCT, DELETE_PRODUCT } from '../store/types';
-import { Product, SearchFilter } from '../types';
+import { NEW_PRODUCT, LIST_PRODUCT, ApiAction, QActions, FETCHING_PRODUCT, DELETE_PRODUCT, LIST_CATEGORY } from '../store/types';
+import { Product, SearchFilter, Category } from '../types';
 import Alert from '../components/Alert';
 import DataTable from '../components/DataTable';
 import SkeletonList from '../components/SkeletonList';
 import DeleteDialog from '../components/DeleteDialog';
 import { listPageStyle } from '../styles';
-import { Grid } from '@material-ui/core';
+import { Grid, MenuItem } from '@material-ui/core';
 import { clearSearchFilters, buildSearchFilters, buildJsonServerQuery } from '../utils/app-utils';
 
 const styles = listPageStyle;
@@ -57,6 +57,9 @@ interface ProductListState {
   search: {
     contain:{
       name: string;
+    },
+    equal: {
+      categoryId: number | string;
     }
   };
 }
@@ -70,13 +73,16 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     this.onPageChange = this.onPageChange.bind(this);
     this.onSnackBarClose = this.onSnackBarClose.bind(this);
     this.handleSearchFilter = this.handleSearchFilter.bind(this);
+    this.handleSearchFilter2 = this.handleSearchFilter2.bind(this);
     this.clearSearchFilter = this.clearSearchFilter.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.handleNewProduct = this.handleNewProduct.bind(this);
     this.onSelectedListChange = this.onSelectedListChange.bind(this);
+    this.categoryList = [{ id: 1, name: "Local d'activité", parentId: '' }, { id: 2, name: "Local vacant", parentId: '' }, { id: 3, name: "Terrain", parentId: '' },]
   }
 
   static defaultProps = defaultProps;
+  categoryList: Category[];
 
   state: ProductListState = {
     isFetching: true,
@@ -91,7 +97,10 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     productList: [],
     search: {
      contain:{
-      name: '',
+      name: ''
+     },
+     equal:{
+      categoryId: ''
      }
     },
   };
@@ -151,8 +160,6 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     const action = getAction(LIST_PRODUCT, null, null, query) as ApiAction;
     this.props.searchProduct(action); //this.state.search);
     this.setState({ searchOpen: false, isFetching: true });
-
-
   }
 
   closeDialog(isConfirmed) {
@@ -185,6 +192,15 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
     if (event && event.target && field) {
       const search = Object.assign({}, this.state.search);
       search.contain[field] = event.target.value;
+      this.setState({ search: search });
+    }
+  }
+
+  handleSearchFilter2(event) {
+    const field = event.target.name;
+    if (event && event.target && field) {
+      const search = Object.assign({}, this.state.search);
+      search.equal[field] = event.target.value;
       this.setState({ search: search });
     }
   }
@@ -236,12 +252,12 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
             <Drawer anchor="right" open={this.state.searchOpen} onClose={this.handleToggle}>
               <Grid container style={styles.searchDrawer} spacing={1}>
                 <Grid item xs={12} style={styles.searchField}>
-                  <h5>Search</h5>
+                  <h5>Chercher</h5>
                 </Grid>
                 <Grid item xs={12} style={styles.searchField}>
                   <TextField
-                    placeholder="Product Name"
-                    label="Product Name"
+                    placeholder="Nom de Produit"
+                    label="Nom de Produit"
                     name="name"
                     fullWidth={true}
                     value={this.state.search.contain.name}
@@ -249,11 +265,30 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
                   />
                 </Grid>
                 <Grid item xs={12} style={styles.searchField}>
+                    <TextField
+                      label="Type"
+                      placeholder="Type"
+                      fullWidth={true}
+                      name="categoryId"
+                      value = {this.state.search.equal.categoryId}
+                      onChange={this.handleSearchFilter2}
+                      select>
+                      {this.categoryList.map((category, index) => (
+                        <MenuItem
+                          key={index}
+                          value={category.id}
+                        >
+                          {category.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                </Grid>
+                <Grid item xs={12} style={styles.searchField}>
                   <Button variant="contained"    style={styles.searchButton} onClick={this.handleSearch} color="secondary">
-                    Search
+                    Chercher
                   </Button>
                   <Button variant="contained"    style={styles.searchButton} onClick={this.clearSearchFilter} color="default" >
-                      Cancel
+                      Annuler
                     </Button>
                 </Grid>
               </Grid>
@@ -266,13 +301,14 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
 }
 
 function mapStateToProps(state) {
-  const { productList,  isFetching,  errorMessage, user, deleted } = state.product;
+  const { productList,  isFetching, categoryList, errorMessage, user, deleted } = state.product;
 
   return {
     productList,
     isFetching,
+    categoryList,
     errorMessage,
-  deleted,
+    deleted,
     user,
   };
 }
