@@ -14,7 +14,7 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 
 import { thunkApiCall, thunkApiQCall } from "../services/thunks";
-import { User, Category, Product, Order, Status } from "../types";
+import { User, Category, Product, Order, Status, Customer } from "../types";
 import {
   Grid,
   IconButton,
@@ -79,6 +79,7 @@ class OrderFormPage extends React.Component<OrderFormProps, OrderFormState> {
     this.onSave = this.onSave.bind(this);
     this.addProduct = this.addProduct.bind(this);
     this.statusList = [{ id: 1, name: "En cours"}, { id: 2, name: "Validé"}, { id: 3, name: "Fermé"},]
+    this.customerList = JSON.parse(localStorage.getItem('ds'))['customers'];
   }
 
   state = {
@@ -94,6 +95,7 @@ class OrderFormPage extends React.Component<OrderFormProps, OrderFormState> {
   };
 
   statusList: Status[];
+  customerList: Customer[];
 
   componentDidMount() {
     // @ts-ignore
@@ -229,16 +231,28 @@ class OrderFormPage extends React.Component<OrderFormProps, OrderFormState> {
               <Form>
                 <Grid container style={styles.container} spacing={3}>
                   <Grid item style={styles.cell} xs={12} md={4}>
-                    <Field
-                      variant="outlined"
+
+                  <Field
+                      select
                       component={TextField}
-                      placeholder="Client"
+                      as="select"
                       label="Client"
-                      name="customer.firstname"
-                      disabled
+                      placeholder="Client"
+                      variant="outlined"
                       fullWidth={true}
+                      name="customerId"
+                      disabled = {false}
                       required
-                    />
+                    >
+                      {this.customerList.map((cust, index) => (
+                        <MenuItem
+                          key={index}
+                          value={cust.id}
+                        >
+                          {cust.lastname}
+                        </MenuItem>
+                      ))}
+                    </Field>
                   </Grid>
                   <Grid item style={styles.cell} xs={12} md={4}>
                     <Field

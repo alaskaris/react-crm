@@ -118,8 +118,11 @@ function DataTable<DataTableProps>({
     } else {
       if (dataKey.includes(".")) {
         const keys = dataKey.split(".");
-
-        return <>{data[keys[0]][keys[1]]}</>;
+        if (data[keys[0]]) {
+          return <>{data[keys[0]][keys[1]]}</>;
+        }else{
+          return <></>
+        }
       } else return <>{data[dataKey]}</>;
     }
   };

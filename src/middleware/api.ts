@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { DB } from "./demo-db"
-
 import { Entity } from '../types';
 import url from 'url';
 import querystring from 'querystring';
@@ -11,6 +10,15 @@ import { getSeachFilters } from "../utils/app-utils";
 
 if (!localStorage.getItem('ds'))
   localStorage.setItem('ds', JSON.stringify(Object.assign({}, DB)));
+
+if (!localStorage.getItem('customer-count'))
+  localStorage.setItem('customer-count', '100');
+
+if (!localStorage.getItem('product-count'))
+  localStorage.setItem('product-count', '200');
+
+if (!localStorage.getItem('order-count'))
+  localStorage.setItem('order-count', '300');
 
 const EXPAND = "_expand"
 
@@ -152,6 +160,21 @@ export function postData(action: string, data: Entity): Promise<TODO> {
   const ds = JSON.parse(localStorage.getItem('ds'));
   const { model } = parseRequest(action)
   return new Promise(function (resolve, _reject) {
+    if (data.id==0) {
+      if (model == 'customers') {
+        data.id = parseInt(localStorage.getItem('customer-count')) + 1;
+        localStorage.setItem('customer-count', data.id.toString());
+      }
+      if (model == 'orders') {
+        data.id = parseInt(localStorage.getItem('order-count')) + 1;
+        localStorage.setItem('order-count', data.id.toString());
+      }
+      if (model == 'products') {
+        data.id = parseInt(localStorage.getItem('product-count')) + 1;
+        localStorage.setItem('product-count', data.id.toString());
+      }
+    }
+
     ds[model].push(data);
     localStorage.setItem('ds', JSON.stringify(ds));
     setTimeout(resolve, 300, { data: data });
