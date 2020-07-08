@@ -259,7 +259,7 @@ class OrderListPage extends React.Component<OrderListProps, OrderListState> {
               onClose={this.onSnackBarClose}
             >
               <Alert onClose={this.onSnackBarClose} severity="success">
-                The operation completed successfully !
+                Opération réalisée avec succès
               </Alert>
             </Snackbar>
             <DataTable

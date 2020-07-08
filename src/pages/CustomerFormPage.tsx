@@ -441,7 +441,7 @@ class CustomerFormPage extends React.Component<
                   onClose={this.onSnackBarClose}
                 >
                   <Alert onClose={this.onSnackBarClose} severity="success">
-                    The operation completed successfully !
+                    Opération réalisée avec succès
                   </Alert>
                 </Snackbar>
               </Form>

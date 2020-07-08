@@ -232,7 +232,7 @@ class ProductListPage extends React.Component<ProductListProps, ProductListState
             </Fab>
             <Snackbar open={this.state.snackbarOpen} autoHideDuration={this.state.autoHideDuration} onClose={this.onSnackBarClose}>
               <Alert onClose={this.onSnackBarClose} severity="success">
-                The operation completed successfully !
+                Opération réalisée avec succès
               </Alert>
             </Snackbar>
             <DataTable
