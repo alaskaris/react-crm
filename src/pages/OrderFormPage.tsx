@@ -14,7 +14,7 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 
 import { thunkApiCall, thunkApiQCall } from "../services/thunks";
-import { User, Category, Product, Order } from "../types";
+import { User, Category, Product, Order, Status } from "../types";
 import {
   Grid,
   IconButton,
@@ -78,6 +78,7 @@ class OrderFormPage extends React.Component<OrderFormProps, OrderFormState> {
     this.onSelectProduct = this.onSelectProduct.bind(this);
     this.onSave = this.onSave.bind(this);
     this.addProduct = this.addProduct.bind(this);
+    this.statusList = [{ id: 1, name: "En cours"}, { id: 2, name: "Validé"}, { id: 3, name: "Fermé"},]
   }
 
   state = {
@@ -91,6 +92,8 @@ class OrderFormPage extends React.Component<OrderFormProps, OrderFormState> {
     dialogText: "Are you sure to do this?",
     product: {} as Product,
   };
+
+  statusList: Status[];
 
   componentDidMount() {
     // @ts-ignore
@@ -356,6 +359,39 @@ class OrderFormPage extends React.Component<OrderFormProps, OrderFormState> {
                           : ""
                       }
                       required
+                    />
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      select
+                      component={TextField}
+                      as="select"
+                      label="Statut"
+                      placeholder="Statut"
+                      variant="outlined"
+                      fullWidth={true}
+                      name="statusId"
+                    >
+                      {this.statusList.map((status, index) => (
+                        <MenuItem
+                          key={index}
+                          value={status.id}
+                        >
+                          {status.name}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                  </Grid>
+
+                  <Grid item style={styles.cell} xs={12} md={4}>
+                    <Field
+                      variant="outlined"
+                      component={TextField}
+                      placeholder="Raison"
+                      label="Raison"
+                      name="reason"
+                      fullWidth={true}
                     />
                   </Grid>
                 </Grid>

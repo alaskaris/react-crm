@@ -55,6 +55,10 @@ export interface Address extends Entity {
   country: string;
 }
 
+export interface Status extends Entity {
+  name: string;
+}
+
 export interface Order extends Entity {
   reference: string;
   customerId: number;
@@ -66,6 +70,9 @@ export interface Order extends Entity {
   orderDate: string;
   shippedDate: string;
   shipAddress: Address;
+  status: Status;
+  reason: string;
+  statusId: number | string;
 }
 
 export interface Product extends Entity {
@@ -195,9 +202,12 @@ export class OrderModel implements Order {
     products: Product[] = [],
     amount: number = 0,
     quantity: number = 0,
+    statusId: number | string = 1,
+    status: Status = {id: 1, name: "En cours"},
+    reason: string = "",
     orderDate?: string,
     shippedDate?: string,
-    shipAddress?: Address
+    shipAddress?: Address,
   ) {
     this.id = 0;
     this.reference = reference;
@@ -209,6 +219,9 @@ export class OrderModel implements Order {
     this.orderDate = orderDate;
     this.shippedDate = shippedDate;
     this.shipAddress = shipAddress;
+    this.status = status;
+    this.reason = reason;
+    this.statusId = statusId;
   }
   id: number;
   reference: string;
@@ -221,6 +234,9 @@ export class OrderModel implements Order {
   orderDate: string;
   shippedDate: string;
   shipAddress: Address;
+  status: Status;
+  reason: string;
+  statusId: number | string;
 }
 
 export class ProductModel implements Product {
